@@ -20,4 +20,7 @@ RSpec.describe Question, type: :model do
     it { should allow_value(14).for(:level) }
     it { should_not allow_value(15).for(:level) }
   end
+
+  subject { Question.new(text: "hello", level: 1, answer1: 2, answer2: 3, answer3: 4, answer4: 4) }
+  it { validate_uniqueness_of :text } 
 end
