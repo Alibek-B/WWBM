@@ -100,4 +100,32 @@ RSpec.describe Game, type: :model do
       expect(game_w_questions.previous_level).to eq(-1)
     end
   end
+
+  describe '.answer_current_question!' do
+    let(:correct_answer) { game_w_questions.current_game_question.correct_answer_key }
+
+    #correct answer
+    it 'correct answer' do
+      expect(game_w_questions.answer_current_question!(correct_answer)).to eq(true)
+    end
+
+    it 'incorrect answer' do
+      expect(game_w_questions.answer_current_question!('incorrect_answer')).to eq(false)
+      expect(game_w_questions.status).to eq(:fail)
+    end
+
+    it 'last correct answer' do
+      game_w_questions.current_level = 14
+      game_w_questions.answer_current_question!(correct_answer)
+
+      expect(game_w_questions.status).to eq(:won)
+    end
+
+
+    it 'answer after timeout' do
+      game_w_questions.finished_at = Time.now
+
+      expect(game_w_questions.status).to eq(:money)
+    end
+  end
 end
