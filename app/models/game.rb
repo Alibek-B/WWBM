@@ -214,5 +214,4 @@ class Game < ActiveRecord::Base
     lvl = FIREPROOF_LEVELS.select { |x| x <= answered_level }.last
     lvl.present? ? PRIZES[lvl] : 0
   end
-
 end

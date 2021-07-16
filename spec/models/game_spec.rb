@@ -107,11 +107,14 @@ RSpec.describe Game, type: :model do
     #correct answer
     it 'correct answer' do
       expect(game_w_questions.answer_current_question!(correct_answer)).to eq(true)
+      expect(game_w_questions.status).to eq(:in_progress)
+      expect(game_w_questions.finished?).to be false
     end
 
     it 'incorrect answer' do
       expect(game_w_questions.answer_current_question!('incorrect_answer')).to eq(false)
       expect(game_w_questions.status).to eq(:fail)
+      expect(game_w_questions.finished?).to be_truthy
     end
 
     it 'last correct answer' do
@@ -119,13 +122,15 @@ RSpec.describe Game, type: :model do
       game_w_questions.answer_current_question!(correct_answer)
 
       expect(game_w_questions.status).to eq(:won)
+      expect(game_w_questions.finished?).to be_truthy
+        expect(user.balance).to eq(1_000_000)
     end
 
-
     it 'answer after timeout' do
-      game_w_questions.finished_at = Time.now
+      game_w_questions.created_at = 1.hour.ago
+      game_w_questions.answer_current_question!(correct_answer)
 
-      expect(game_w_questions.status).to eq(:money)
+      expect(game_w_questions.status).to eq(:timeout)
     end
   end
 end
