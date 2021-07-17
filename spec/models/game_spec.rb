@@ -108,13 +108,13 @@ RSpec.describe Game, type: :model do
     it 'correct answer' do
       expect(game_w_questions.answer_current_question!(correct_answer)).to eq(true)
       expect(game_w_questions.status).to eq(:in_progress)
-      expect(game_w_questions.finished?).to be false
+      expect(game_w_questions.finished?).to eq(false)
     end
 
     it 'incorrect answer' do
       expect(game_w_questions.answer_current_question!('incorrect_answer')).to eq(false)
       expect(game_w_questions.status).to eq(:fail)
-      expect(game_w_questions.finished?).to be_truthy
+      expect(game_w_questions.finished?).to eq(true)
     end
 
     it 'last correct answer' do
@@ -122,8 +122,8 @@ RSpec.describe Game, type: :model do
       game_w_questions.answer_current_question!(correct_answer)
 
       expect(game_w_questions.status).to eq(:won)
-      expect(game_w_questions.finished?).to be_truthy
-        expect(user.balance).to eq(1_000_000)
+      expect(game_w_questions.finished?).to eq(true)
+      expect(user.balance).to eq(1_000_000)
     end
 
     it 'answer after timeout' do
