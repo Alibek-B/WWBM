@@ -30,7 +30,7 @@ RSpec.describe GamesController, type: :controller do
     end
 
     it 'kick from #create' do
-      post :create, id: game_w_questions.id
+      post :create
 
       expect(response.status).not_to eq(200)
       expect(response).to redirect_to(new_user_session_path)
@@ -38,7 +38,7 @@ RSpec.describe GamesController, type: :controller do
     end
 
     it 'kick from #answer' do
-      get :answer, id: game_w_questions.id
+      put :answer, id: game_w_questions.id
 
       expect(response.status).not_to eq(200)
       expect(response).to redirect_to(new_user_session_path)
