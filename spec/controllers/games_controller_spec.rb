@@ -162,7 +162,7 @@ RSpec.describe GamesController, type: :controller do
     end
 
     it 'incorrect answer' do
-      put :answer, id: game_w_questions.id
+      put :answer, id: game_w_questions.id, letter: "incorrect letter"
 
       game = assigns[:game]
 
