@@ -162,7 +162,11 @@ RSpec.describe GamesController, type: :controller do
     end
 
     it 'incorrect answer' do
-      put :answer, id: game_w_questions.id, letter: "incorrect letter"
+      letters = ['a', 'b', 'c', 'd']
+      correct_answer = game_w_questions.current_game_question.correct_answer_key
+      incorrect_letters = letters.delete_if{ |letter| letter == correct_answer }.sample
+
+      put :answer, id: game_w_questions.id, letter: incorrect_letters
 
       game = assigns[:game]
 
