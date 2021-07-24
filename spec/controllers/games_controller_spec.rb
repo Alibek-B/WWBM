@@ -162,9 +162,8 @@ RSpec.describe GamesController, type: :controller do
     end
 
     it 'incorrect answer' do
-      letters = ['a', 'b', 'c', 'd']
       correct_answer = game_w_questions.current_game_question.correct_answer_key
-      incorrect_letters = letters.delete_if{ |letter| letter == correct_answer }.sample
+      incorrect_letters = (%w[a b c d] - [correct_answer]).sample
 
       put :answer, id: game_w_questions.id, letter: incorrect_letters
 
