@@ -34,6 +34,19 @@ RSpec.describe GameQuestion, type: :model do
   # }
   #
 
+  it 'correct .help_hash' do
+    expect(game_question.help_hash).to eq({})
+
+    game_question.help_hash[:key1] = 'value1'
+    game_question.help_hash[:key2] = 'value2'
+
+    expect(game_question.save).to eq(true)
+
+    question = GameQuestion.find(game_question.id)
+
+    expect(question.help_hash).to eq({key1: 'value1', key2: 'value2'})
+  end
+
   context 'user helpers' do
     it 'correct audience_help' do
       expect(game_question.help_hash).not_to include(:audience_help)
@@ -44,6 +57,29 @@ RSpec.describe GameQuestion, type: :model do
 
       ah = game_question.help_hash[:audience_help]
       expect(ah.keys).to contain_exactly('a', 'b', 'c', 'd')
+    end
+
+    it 'correct fifty_fifty' do
+      expect(game_question.help_hash).not_to include(:fifty_fifty)
+
+      game_question.add_fifty_fifty
+
+      expect(game_question.help_hash).to include(:fifty_fifty)
+
+      fifty_fifty = game_question.help_hash[:fifty_fifty]
+      expect(fifty_fifty).to include('b')
+      expect(fifty_fifty.size).to eq(2)
+    end
+
+    it 'correct friend_call' do
+      expect(game_question.help_hash).not_to include(:friend_call)
+
+      game_question.add_friend_call
+
+      expect(game_question.help_hash).to include(:friend_call)
+
+      freind_call = game_question.help_hash[:friend_call]
+      expect(freind_call).to match /A|B|C|D/
     end
   end
 
