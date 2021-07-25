@@ -89,19 +89,19 @@ RSpec.describe Game, type: :model do
     end
   end
 
-  describe '.current_game_question' do
+  describe '#current_game_question' do
     it 'returns current game question' do
       expect(game_w_questions.current_game_question).to eq(game_w_questions.game_questions[0])
     end
   end
 
-  describe '.previous_level' do
+  describe '#previous_level' do
     it 'returns previous level' do
       expect(game_w_questions.previous_level).to eq(-1)
     end
   end
 
-  describe '.answer_current_question!' do
+  describe '#answer_current_question!' do
     let(:correct_answer) { game_w_questions.current_game_question.correct_answer_key }
 
     #correct answer
