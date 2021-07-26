@@ -33,53 +33,58 @@ RSpec.describe GameQuestion, type: :model do
   #   friend_call: 'Василий Петрович считает, что правильный ответ A'
   # }
   #
+    it 'correct .help_hash' do
+      expect(game_question.help_hash).to eq({})
 
-  it 'correct .help_hash' do
-    expect(game_question.help_hash).to eq({})
+      game_question.help_hash[:key1] = 'value1'
+      game_question.help_hash[:key2] = 'value2'
 
-    game_question.help_hash[:key1] = 'value1'
-    game_question.help_hash[:key2] = 'value2'
+      expect(game_question.save).to eq(true)
 
-    expect(game_question.save).to eq(true)
+      question = GameQuestion.find(game_question.id)
 
-    question = GameQuestion.find(game_question.id)
-
-    expect(question.help_hash).to eq({key1: 'value1', key2: 'value2'})
-  end
+      expect(question.help_hash).to eq({key1: 'value1', key2: 'value2'})
+    end
 
   context 'user helpers' do
-    it 'correct audience_help' do
-      expect(game_question.help_hash).not_to include(:audience_help)
+    describe '#audience_help' do
+      it 'correct audience_help' do
+        expect(game_question.help_hash).not_to include(:audience_help)
 
-      game_question.add_audience_help
+        game_question.add_audience_help
 
-      expect(game_question.help_hash).to include(:audience_help)
+        expect(game_question.help_hash).to include(:audience_help)
 
-      ah = game_question.help_hash[:audience_help]
-      expect(ah.keys).to contain_exactly('a', 'b', 'c', 'd')
+        ah = game_question.help_hash[:audience_help]
+        expect(ah.keys).to contain_exactly('a', 'b', 'c', 'd')
+      end
     end
 
-    it 'correct fifty_fifty' do
-      expect(game_question.help_hash).not_to include(:fifty_fifty)
+    describe '#fifty_fifty' do
+      it 'correct fifty_fifty' do
+        expect(game_question.help_hash).not_to include(:fifty_fifty)
 
-      game_question.add_fifty_fifty
+        game_question.add_fifty_fifty
 
-      expect(game_question.help_hash).to include(:fifty_fifty)
+        expect(game_question.help_hash).to include(:fifty_fifty)
 
-      fifty_fifty = game_question.help_hash[:fifty_fifty]
-      expect(fifty_fifty).to include('b')
-      expect(fifty_fifty.size).to eq(2)
+        fifty_fifty = game_question.help_hash[:fifty_fifty]
+        expect(fifty_fifty).to include('b')
+        expect(fifty_fifty.size).to eq(2)
+      end
     end
 
-    it 'correct friend_call' do
-      expect(game_question.help_hash).not_to include(:friend_call)
+    describe '#friend_call' do
+      it 'correct friend_call' do
+        expect(game_question.help_hash).not_to include(:friend_call)
 
-      game_question.add_friend_call
+        game_question.add_friend_call
 
-      expect(game_question.help_hash).to include(:friend_call)
+        expect(game_question.help_hash).to include(:friend_call)
 
-      freind_call = game_question.help_hash[:friend_call]
-      expect(freind_call).to match /A|B|C|D/
+        freind_call = game_question.help_hash[:friend_call]
+        expect(freind_call).to match /A|B|C|D/
+      end
     end
   end
 
