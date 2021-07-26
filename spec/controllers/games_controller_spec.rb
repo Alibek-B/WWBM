@@ -175,5 +175,20 @@ RSpec.describe GamesController, type: :controller do
       expect(response).to redirect_to(user_path)
       expect(flash[:alert]).to be
     end
+
+    it 'can used fifty_fifty' do
+      expect(game_w_questions.fifty_fifty_used).to eq(false)
+      expect(game_w_questions.current_game_question.help_hash[:fifty_fifty]).not_to be
+
+      put :help, id: game_w_questions.id, help_type: :fifty_fifty
+
+      game = assigns(:game)
+
+      expect(game.finished?).to eq(false)
+      expect(game.fifty_fifty_used).to eq(true)
+      expect(game.current_game_question.help_hash[:fifty_fifty]).to be
+      expect(flash[:info]).to be
+      expect(response).to redirect_to(game_path(game))
+    end
   end
 end
