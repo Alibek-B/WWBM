@@ -1,14 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'users/show', type: :view do
-
-  # - пользователь видит там свое имя
-  # - что текущий пользователь (и только он) видит там кнопку для смены пароля
-  # - что на странице отрисовываются фрагменты с игрой
-
-
   let(:user) { FactoryGirl.create(:user, name: 'Elon') }
-  let(:game) { [FactoryGirl.create(:game)] }
+  let(:game) { [FactoryGirl.build_stubbed(:game)] }
 
   context 'authorized user' do
     before(:each) do
